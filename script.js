@@ -159,12 +159,19 @@ checkSession();
 
 const authResult = new URLSearchParams(location.search).get('admin');
 if (authResult) {
+  const authReason = new URLSearchParams(location.search).get('reason');
   const messages = {
     ok: 'Discord verified. Admin mode unlocked.',
     denied: 'This Discord account is not authorized.',
     error: 'Discord sign-in could not be completed.',
     setup: 'Discord sign-in needs to be configured on the server.'
   };
-  showToast(messages[authResult] || messages.error);
+  const reasonMessages = {
+    state: 'Discord session expired. Please try signing in again.',
+    token: 'Discord rejected the Client ID or Client Secret.',
+    user: 'Discord could not read this account.',
+    unknown: 'Discord sign-in failed unexpectedly.'
+  };
+  showToast(authResult === 'error' ? (reasonMessages[authReason] || messages.error) : (messages[authResult] || messages.error));
   history.replaceState({}, '', `${location.pathname}${location.hash}`);
 }

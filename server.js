@@ -11,18 +11,17 @@ const DATA_DIR = path.join(STORAGE_ROOT, 'data');
 const UPLOAD_DIR = path.join(STORAGE_ROOT, 'uploads');
 const MANIFEST_FILE = path.join(DATA_DIR, 'clips.json');
 const PORT = Number(process.env.PORT || 3000);
-const DISCORD_CLIENT_ID = process.env.DISCORD_CLIENT_ID || '';
-const DISCORD_CLIENT_SECRET = process.env.DISCORD_CLIENT_SECRET || '';
+const DISCORD_CLIENT_ID = String(process.env.DISCORD_CLIENT_ID || '').trim();
+const DISCORD_CLIENT_SECRET = String(process.env.DISCORD_CLIENT_SECRET || '').trim();
 const DISCORD_ADMIN_USER_IDS = String(process.env.DISCORD_ADMIN_USER_IDS || process.env.DISCORD_ADMIN_USER_ID || '')
   .split(',')
   .map((id) => id.trim())
   .filter(Boolean);
-const PUBLIC_URL = (process.env.PUBLIC_URL || `http://localhost:${PORT}`).replace(/\/$/, '');
+const PUBLIC_URL = String(process.env.PUBLIC_URL || `http://localhost:${PORT}`).trim().replace(/\/$/, '');
 const SECURE_COOKIE = PUBLIC_URL.startsWith('https://') ? '; Secure' : '';
 const MAX_UPLOAD = 250 * 1024 * 1024;
 const VALID_SLOTS = new Set(['clip1', 'clip2', 'clip3', 'featured']);
 const sessions = new Map();
-const oauthStates = new Map();
 
 fs.mkdirSync(DATA_DIR, { recursive: true });
 fs.mkdirSync(UPLOAD_DIR, { recursive: true });
@@ -154,7 +153,6 @@ const server = http.createServer((req, res) => {
       return res.end();
     }
     const state = crypto.randomBytes(24).toString('hex');
-    oauthStates.set(state, Date.now() + 10 * 60 * 1000);
     const redirectUri = `${PUBLIC_URL}/auth/discord/callback`;
     const authorize = new URL('https://discord.com/oauth2/authorize');
     authorize.searchParams.set('client_id', DISCORD_CLIENT_ID);
@@ -170,10 +168,9 @@ const server = http.createServer((req, res) => {
     const state = url.searchParams.get('state') || '';
     const code = url.searchParams.get('code') || '';
     const cookieState = cookies(req).discord_oauth_state || '';
-    const expiry = oauthStates.get(state);
-    oauthStates.delete(state);
-    if (!code || state !== cookieState || !expiry || expiry < Date.now()) {
-      res.writeHead(302, { Location: '/?admin=error' });
+    if (!code || !state || state !== cookieState) {
+      console.error('Discord OAuth callback rejected: state cookie mismatch or missing authorization code.');
+      res.writeHead(302, { Location: '/?admin=error&reason=state' });
       return res.end();
     }
 
@@ -185,10 +182,21 @@ const server = http.createServer((req, res) => {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: new URLSearchParams({ client_id: DISCORD_CLIENT_ID, client_secret: DISCORD_CLIENT_SECRET, grant_type: 'authorization_code', code, redirect_uri: redirectUri })
         });
-        if (!tokenResponse.ok) throw new Error('Discord token exchange failed');
+        if (!tokenResponse.ok) {
+          const detail = await tokenResponse.text();
+          console.error(`Discord token exchange failed (${tokenResponse.status}): ${detail.slice(0, 500)}`);
+          const error = new Error('token');
+          error.reason = 'token';
+          throw error;
+        }
         const token = await tokenResponse.json();
         const userResponse = await fetch('https://discord.com/api/users/@me', { headers: { Authorization: `Bearer ${token.access_token}` } });
-        if (!userResponse.ok) throw new Error('Discord user lookup failed');
+        if (!userResponse.ok) {
+          console.error(`Discord user lookup failed (${userResponse.status}).`);
+          const error = new Error('user');
+          error.reason = 'user';
+          throw error;
+        }
         const user = await userResponse.json();
         if (!DISCORD_ADMIN_USER_IDS.includes(String(user.id))) {
           res.writeHead(302, { Location: '/?admin=denied', 'Set-Cookie': `discord_oauth_state=; HttpOnly; SameSite=Lax; Path=/; Max-Age=0${SECURE_COOKIE}` });
@@ -198,8 +206,10 @@ const server = http.createServer((req, res) => {
         sessions.set(sessionToken, Date.now() + 12 * 60 * 60 * 1000);
         res.writeHead(302, { Location: '/?admin=ok', 'Set-Cookie': [`friend_admin=${sessionToken}; HttpOnly; SameSite=Strict; Path=/; Max-Age=43200${SECURE_COOKIE}`, `discord_oauth_state=; HttpOnly; SameSite=Lax; Path=/; Max-Age=0${SECURE_COOKIE}`] });
         return res.end();
-      } catch {
-        res.writeHead(302, { Location: '/?admin=error' });
+      } catch (error) {
+        const reason = ['token', 'user'].includes(error?.reason) ? error.reason : 'unknown';
+        if (reason === 'unknown') console.error('Discord OAuth callback failed:', error);
+        res.writeHead(302, { Location: `/?admin=error&reason=${reason}` });
         return res.end();
       }
     })();
