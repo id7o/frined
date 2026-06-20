@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Friend — a private circle of conscious, brilliant, and unique individuals.">
+  <title>Friend — A Private Circle</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="top-rule" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <nav class="nav shell" aria-label="Main navigation">
+      <a class="brand" href="#top" aria-label="Friend home">Friend</a>
+      <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#discord">Discord</a>
+        <a href="#video">Video</a>
+        <a href="#founders">Founders</a>
+        <button class="quick-join js-open-join" type="button">Quick Join</button>
+        <button class="admin-link js-open-admin" type="button">Admin</button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-inner shell">
+        <p class="eyebrow centered"><span></span>A PRIVATE CIRCLE, EST. 2025</p>
+        <h1 id="hero-title">We are <em>Friend.</em></h1>
+        <div class="gold-line" aria-hidden="true"></div>
+        <p class="hero-copy">A community of conscious, brilliant, and unique individuals<br>
+          — gathered not by accident, but by the same quiet pursuit<br>
+          of something more.</p>
+        <div class="hero-actions">
+          <button class="button button-gold js-open-join" type="button">Quick Login / Join</button>
+          <a class="button button-outline" href="#about">Discover the vision</a>
+        </div>
+      </div>
+      <a class="scroll-cue" href="#about"><span>SCROLL</span><i></i></a>
+    </section>
+
+    <section class="about section shell" id="about" aria-labelledby="about-title">
+      <div class="section-heading">
+        <p class="eyebrow"><span></span>OUR STORY</p>
+        <h2 id="about-title">Not a server. A circle.</h2>
+      </div>
+      <div class="about-grid">
+        <div class="founder-list" aria-label="Founding members">
+          <div><b>D-</b><span>ELITE</span></div>
+          <div><b>A</b><span>ELITE</span></div>
+        </div>
+        <div class="about-copy">
+          <p>Friend began as a simple idea: that the right small group of people, thinking clearly and speaking honestly, can hold more value than any crowd. We are deliberately few — <strong><em>nine, by design</em></strong> — chosen not for status, but for substance.</p>
+          <p><strong><em>D-</em></strong> and <strong><em>A</em></strong> laid the foundation this community now stands on: a space where conscious, brilliant, and unique individuals can speak plainly, think deeply, and build something real together.</p>
+          <p>Our vision isn't to grow loud. It's to stay true — a small, trusted table where every voice at it actually matters.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats-section shell" aria-label="Friend by the numbers">
+      <div class="stats-card">
+        <div class="stat stat-members"><strong>9</strong><span>MEMBERS</span></div>
+        <div class="stat stat-age"><div><strong>9</strong><b>months</b></div><span>TOGETHER SINCE SEP 10, 2025</span></div>
+        <div class="stat stat-vision"><strong>1</strong><span>SHARED VISION</span></div>
+      </div>
+    </section>
+
+    <section class="discord section" id="discord" aria-labelledby="discord-title">
+      <div class="shell">
+        <div class="section-heading narrow-heading">
+          <p class="eyebrow"><span></span>ON DISCORD</p>
+          <h2 id="discord-title">The best of us, in motion.</h2>
+          <p>A few moments pulled from our server — the conversations, the<br>laughs, the late nights that make Friend what it is.</p>
+        </div>
+
+        <div class="clip-grid">
+          <article class="clip-card" data-slot="clip1">
+            <input type="file" accept="video/*" aria-label="Upload first clip">
+            <span class="clip-preview"><small>CLIP</small><i class="play">▶</i><video playsinline controls preload="metadata"></video></span>
+            <span class="clip-info"><b>Friend moment I</b><small>A moment from our circle</small></span>
+            <span class="admin-controls"><button class="replace-video" type="button">Change</button><button class="remove-video" type="button">Remove</button></span>
+          </article>
+          <article class="clip-card" data-slot="clip2">
+            <input type="file" accept="video/*" aria-label="Upload second clip">
+            <span class="clip-preview"><small>CLIP</small><i class="play">▶</i><video playsinline controls preload="metadata"></video></span>
+            <span class="clip-info"><b>Friend moment II</b><small>A moment from our circle</small></span>
+            <span class="admin-controls"><button class="replace-video" type="button">Change</button><button class="remove-video" type="button">Remove</button></span>
+          </article>
+          <article class="clip-card" data-slot="clip3">
+            <input type="file" accept="video/*" aria-label="Upload third clip">
+            <span class="clip-preview"><small>CLIP</small><i class="play">▶</i><video playsinline controls preload="metadata"></video></span>
+            <span class="clip-info"><b>Friend moment III</b><small>A moment from our circle</small></span>
+            <span class="admin-controls"><button class="replace-video" type="button">Change</button><button class="remove-video" type="button">Remove</button></span>
+          </article>
+        </div>
+
+        <div class="discord-banner">
+          <div class="discord-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" role="img"><path d="M19.5 5.34A17.1 17.1 0 0 0 15.44 4l-.5 1.03a15.55 15.55 0 0 0-5.88 0L8.55 4A17.23 17.23 0 0 0 4.5 5.35C1.94 9.17 1.25 12.9 1.6 16.58a16.4 16.4 0 0 0 4.98 2.5l1.2-1.65a10.63 10.63 0 0 1-1.89-.9l.47-.36c3.64 1.7 7.6 1.7 11.2 0l.47.36c-.6.35-1.23.66-1.9.9l1.2 1.65a16.35 16.35 0 0 0 4.98-2.5c.42-4.27-.72-7.96-2.81-11.24ZM8.82 14.33c-1.1 0-2-1.02-2-2.27s.88-2.27 2-2.27 2.02 1.03 2 2.27c0 1.25-.89 2.27-2 2.27Zm6.36 0c-1.1 0-2-1.02-2-2.27s.88-2.27 2-2.27 2.02 1.03 2 2.27c0 1.25-.88 2.27-2 2.27Z"/></svg>
+          </div>
+          <div><strong>Join the Friend server</strong><span>9 members, voice &amp; text always open</span></div>
+          <a class="button button-black" href="https://discord.gg/XtdCZ2MVT" target="_blank" rel="noopener">discord.gg/XtdCZ2MVT</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="featured section shell" id="video" aria-labelledby="video-title">
+      <div class="section-heading narrow-heading">
+        <p class="eyebrow"><span></span>FEATURED</p>
+        <h2 id="video-title">A closer look.</h2>
+        <p>A short film for Friend — one story, shared with the circle.</p>
+      </div>
+      <div class="featured-video" data-slot="featured">
+        <input type="file" accept="video/*" aria-label="Choose featured video">
+        <span class="video-empty"><i>F</i><b>Featured film coming soon.</b></span>
+        <video controls playsinline preload="metadata"></video>
+        <span class="admin-controls featured-controls"><button class="replace-video" type="button">Change featured video</button><button class="remove-video" type="button">Remove</button></span>
+      </div>
+    </section>
+
+    <section class="founders section" id="founders" aria-labelledby="founders-title">
+      <div class="shell founders-shell">
+        <div class="section-heading centered-heading">
+          <p class="eyebrow centered"><span></span>THE ELITE</p>
+          <h2 id="founders-title">The two who started it.</h2>
+          <p>Friend exists because two people decided it should. Here they are.</p>
+        </div>
+        <div class="founder-cards">
+          <article class="founder-card">
+            <img src="assets/founder-d.jpg" alt="D-, co-founder of Friend">
+            <div><span>ELITE</span><strong>D-</strong></div>
+          </article>
+          <article class="founder-card">
+            <img src="assets/founder-a.jpg" alt="A, co-founder of Friend">
+            <div><span>ELITE</span><strong>A</strong></div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell">
+      <div class="footer-top">
+        <a class="brand" href="#top">Friend</a>
+        <nav aria-label="Footer navigation"><a href="#about">About</a><a href="#discord">Discord</a><a href="#founders">Founders</a><button class="plain-link js-open-join" type="button">Join</button><button class="plain-link js-open-admin" type="button">Admin</button></nav>
+      </div>
+      <div class="footer-bottom"><span>© 2026 Friend. All rights reserved.</span><span>Est. September 10, 2025</span></div>
+    </div>
+  </footer>
+
+  <dialog class="join-dialog" aria-labelledby="join-title">
+    <button class="dialog-close" type="button" aria-label="Close">×</button>
+    <p class="eyebrow centered"><span></span>PRIVATE ACCESS</p>
+    <h2 id="join-title">Enter the circle.</h2>
+    <p>Friend is deliberately small. Join us through the private Discord invitation.</p>
+    <a class="button button-gold" href="https://discord.gg/XtdCZ2MVT" target="_blank" rel="noopener">Continue to Discord</a>
+  </dialog>
+
+  <dialog class="admin-dialog" aria-labelledby="admin-title">
+    <button class="dialog-close admin-close" type="button" aria-label="Close">×</button>
+    <div class="admin-login-view">
+      <p class="eyebrow centered"><span></span>DISCORD ACCESS</p>
+      <h2 id="admin-title">Manage the films.</h2>
+      <p>Sign in with the authorized Discord account. No site password is required.</p>
+      <a class="button button-discord" href="/auth/discord">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.5 5.34A17.1 17.1 0 0 0 15.44 4l-.5 1.03a15.55 15.55 0 0 0-5.88 0L8.55 4A17.23 17.23 0 0 0 4.5 5.35C1.94 9.17 1.25 12.9 1.6 16.58a16.4 16.4 0 0 0 4.98 2.5l1.2-1.65a10.63 10.63 0 0 1-1.89-.9l.47-.36c3.64 1.7 7.6 1.7 11.2 0l.47.36c-.6.35-1.23.66-1.9.9l1.2 1.65a16.35 16.35 0 0 0 4.98-2.5c.42-4.27-.72-7.96-2.81-11.24ZM8.82 14.33c-1.1 0-2-1.02-2-2.27s.88-2.27 2-2.27 2.02 1.03 2 2.27c0 1.25-.89 2.27-2 2.27Zm6.36 0c-1.1 0-2-1.02-2-2.27s.88-2.27 2-2.27 2.02 1.03 2 2.27c0 1.25-.88 2.27-2 2.27Z"/></svg>
+        Continue with Discord
+      </a>
+    </div>
+    <div class="admin-panel-view" hidden>
+      <p class="eyebrow centered"><span></span>ADMIN MODE</p>
+      <h2>Management unlocked.</h2>
+      <p>Use the controls on each video to change or remove it. Every update is saved for all visitors.</p>
+      <button class="button button-outline admin-done" type="button">Done</button>
+      <button class="plain-link admin-logout" type="button">Disconnect Discord</button>
+    </div>
+  </dialog>
+
+  <div class="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
