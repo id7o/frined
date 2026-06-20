@@ -13,7 +13,10 @@ const MANIFEST_FILE = path.join(DATA_DIR, 'clips.json');
 const PORT = Number(process.env.PORT || 3000);
 const DISCORD_CLIENT_ID = process.env.DISCORD_CLIENT_ID || '';
 const DISCORD_CLIENT_SECRET = process.env.DISCORD_CLIENT_SECRET || '';
-const DISCORD_ADMIN_USER_ID = process.env.DISCORD_ADMIN_USER_ID || '';
+const DISCORD_ADMIN_USER_IDS = String(process.env.DISCORD_ADMIN_USER_IDS || process.env.DISCORD_ADMIN_USER_ID || '')
+  .split(',')
+  .map((id) => id.trim())
+  .filter(Boolean);
 const PUBLIC_URL = (process.env.PUBLIC_URL || `http://localhost:${PORT}`).replace(/\/$/, '');
 const SECURE_COOKIE = PUBLIC_URL.startsWith('https://') ? '; Secure' : '';
 const MAX_UPLOAD = 250 * 1024 * 1024;
@@ -146,7 +149,7 @@ const server = http.createServer((req, res) => {
   if (req.method === 'GET' && pathname === '/api/session') return json(res, 200, { authenticated: authenticated(req) });
 
   if (req.method === 'GET' && pathname === '/auth/discord') {
-    if (!DISCORD_CLIENT_ID || !DISCORD_CLIENT_SECRET || !DISCORD_ADMIN_USER_ID) {
+    if (!DISCORD_CLIENT_ID || !DISCORD_CLIENT_SECRET || DISCORD_ADMIN_USER_IDS.length === 0) {
       res.writeHead(302, { Location: '/?admin=setup' });
       return res.end();
     }
@@ -187,7 +190,7 @@ const server = http.createServer((req, res) => {
         const userResponse = await fetch('https://discord.com/api/users/@me', { headers: { Authorization: `Bearer ${token.access_token}` } });
         if (!userResponse.ok) throw new Error('Discord user lookup failed');
         const user = await userResponse.json();
-        if (String(user.id) !== String(DISCORD_ADMIN_USER_ID)) {
+        if (!DISCORD_ADMIN_USER_IDS.includes(String(user.id))) {
           res.writeHead(302, { Location: '/?admin=denied', 'Set-Cookie': `discord_oauth_state=; HttpOnly; SameSite=Lax; Path=/; Max-Age=0${SECURE_COOKIE}` });
           return res.end();
         }
@@ -235,7 +238,7 @@ const server = http.createServer((req, res) => {
 
 server.listen(PORT, () => {
   console.log(`Friend is running at http://localhost:${PORT}`);
-  if (!DISCORD_CLIENT_ID || !DISCORD_CLIENT_SECRET || !DISCORD_ADMIN_USER_ID) console.log('Discord admin sign-in is not configured yet. See README.md.');
+  if (!DISCORD_CLIENT_ID || !DISCORD_CLIENT_SECRET || DISCORD_ADMIN_USER_IDS.length === 0) console.log('Discord admin sign-in is not configured yet. See README.md.');
 });
 
 module.exports = server;
